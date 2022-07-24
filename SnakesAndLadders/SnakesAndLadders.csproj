@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SnakesAndLaddersLib\SnakesAndLadders.Core.csproj" />
+    <ProjectReference Include="..\SnakesAndLaddersCore\SnakesAndLadders.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
