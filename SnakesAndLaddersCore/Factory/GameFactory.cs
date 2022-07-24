@@ -5,12 +5,18 @@ using SnakesAndLadders.Core.Models;
 
 namespace SnakesAndLadders.Core.Factory
 {
+    /// <summary>
+    /// Type of games
+    /// </summary>
     public enum Game
     {
         BasicSnakesAndLadder,
         SnakesAndLadderWithTrap
     }
 
+    /// <summary>
+    /// Factory to create Games
+    /// </summary>
     public static class GameFactory
     {
         public delegate void NotifyWinner(IPlayer player);

@@ -4,6 +4,9 @@ using SnakesAndLadders.Core.Models;
 
 namespace SnakesAndLadders.Core.Factory
 {
+    /// <summary>
+    /// Factory to create Stats
+    /// </summary>
     public static class StatsFactory
     {
         public static IGameStats CreateStats(IEnumerable<IPlayer> players, Logger logger)

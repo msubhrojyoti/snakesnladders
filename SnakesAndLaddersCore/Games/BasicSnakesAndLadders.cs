@@ -4,6 +4,9 @@ using SnakesAndLadders.Core.Interfaces;
 
 namespace SnakesAndLadders.Core.Games
 {
+    /// <summary>
+    /// Main Snakes and Ladders Game
+    /// </summary>
     public class BasicSnakesAndLadders : IGame
     {
         protected readonly IEnumerable<IPlayer> _players;

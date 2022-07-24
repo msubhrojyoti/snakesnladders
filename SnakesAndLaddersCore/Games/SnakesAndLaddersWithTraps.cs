@@ -4,12 +4,14 @@ using SnakesAndLadders.Core.Interfaces;
 
 namespace SnakesAndLadders.Core.Games
 {
+    /// <summary>
+    /// Variation of Main Snakes and Ladders Game. Traps will keep the player in the current position (they will not advance since there is a trap)
+    /// </summary>
     public class SnakesAndLaddersWithTraps : BasicSnakesAndLadders
     {
         public SnakesAndLaddersWithTraps(IBoard board, IEnumerable<IPlayer> players, IEnumerable<ICharacter> characters, IAdvancer advancer, IGameStats stats, Logger logger) : base(board, players, characters, advancer, stats, logger)
         {
         }
-
         protected override void ExecuteRoll(IPlayer player, int roll)
         {
             var newPos = player.Position + roll;
@@ -40,7 +42,6 @@ namespace SnakesAndLadders.Core.Games
                 }
             }
         }
-
         protected override void Dispose(bool disposing)
         {
             if (!disposing)

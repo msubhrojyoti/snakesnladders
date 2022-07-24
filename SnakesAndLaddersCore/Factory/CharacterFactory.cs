@@ -3,6 +3,9 @@ using SnakesAndLadders.Core.Models;
 
 namespace SnakesAndLadders.Core.Factory
 {
+    /// <summary>
+    /// Type of characters
+    /// </summary>
     public enum Character
     {
         Snake,
@@ -10,6 +13,9 @@ namespace SnakesAndLadders.Core.Factory
         Trap
     }
 
+    /// <summary>
+    /// Factory to create Characters
+    /// </summary>
     public static class CharacterFactory
     {
         public static ICharacter CreateCharacter(Character type, int start, int end)
