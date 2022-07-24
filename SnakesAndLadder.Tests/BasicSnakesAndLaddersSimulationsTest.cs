@@ -32,6 +32,12 @@ namespace SnakesAndLadders.Tests
             _dice = AdvancerFactory.CreateAdvancer(1, 6);
         }
 
+        [TearDown]
+        public void Teardown()
+        {
+            _game.Dispose();
+        }
+
         [Test]
         [TestCase(1, new[]{"Josh"})]
         [TestCase(5, new[] { "Josh", "Don", "Harry" })]

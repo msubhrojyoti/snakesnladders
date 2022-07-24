@@ -10,5 +10,6 @@
         public int LuckyRolls { get; set; }
         public int BiggestClimbInATurn { get; set; }
         public int BiggestSlideInATurn { get; set; }
+        public int TotalTraps { get; set; }
     }
 }

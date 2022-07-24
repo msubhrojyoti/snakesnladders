@@ -2,7 +2,7 @@
 
 namespace SnakesAndLadders.Core.Interfaces
 {
-    public interface IGame
+    public interface IGame : IDisposable
     {
         event GameFactory.NotifyWinner OnWinner;
         void Play();

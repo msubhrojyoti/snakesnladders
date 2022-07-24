@@ -17,5 +17,7 @@
         int GetLuckyRolls(IPlayer player);
         int GetBiggestClimbInATurn(IPlayer player);
         int GetBiggestSlideInATurn(IPlayer player);
+        int UpdateTotalTraps(IPlayer player);
+        int GetTotalTraps(IPlayer player);
     }
 }

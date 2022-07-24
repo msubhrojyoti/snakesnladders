@@ -1,5 +1,5 @@
 ﻿using Serilog.Core;
-using SnakesAndLadders.Core.GameVariations;
+using SnakesAndLadders.Core.Games;
 using SnakesAndLadders.Core.Interfaces;
 using SnakesAndLadders.Core.Models;
 

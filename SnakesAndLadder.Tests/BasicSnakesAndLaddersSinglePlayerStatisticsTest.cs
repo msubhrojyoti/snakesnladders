@@ -67,7 +67,7 @@ namespace SnakesAndLadders.Tests
             var stats = StatsFactory.CreateStats(_players, _logger);
 
             // act
-            var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, characters, mockDice.Object, stats, _logger);
+            using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, characters, mockDice.Object, stats, _logger);
             game.Play();
 
             // assert
@@ -117,7 +117,7 @@ namespace SnakesAndLadders.Tests
             var stats = StatsFactory.CreateStats(_players, _logger);
 
             // act
-            var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, characters, mockDice.Object, stats, _logger);
+            using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, characters, mockDice.Object, stats, _logger);
             game.Play();
 
             // assert
@@ -167,7 +167,7 @@ namespace SnakesAndLadders.Tests
             var stats = StatsFactory.CreateStats(players, _logger);
 
             // act
-            var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, players, characters, mockDice.Object, stats, _logger);
+            using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, players, characters, mockDice.Object, stats, _logger);
             game.Play();
 
             // assert
@@ -222,7 +222,7 @@ namespace SnakesAndLadders.Tests
             var stats = StatsFactory.CreateStats(players, _logger);
 
             // act
-            var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, players, characters, mockDice.Object, stats, _logger);
+            using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, players, characters, mockDice.Object, stats, _logger);
             game.Play();
 
             // assert
@@ -281,7 +281,7 @@ namespace SnakesAndLadders.Tests
             var stats = StatsFactory.CreateStats(players, _logger);
 
             // act
-            var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, players, characters, mockDice.Object, stats, _logger);
+            using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, players, characters, mockDice.Object, stats, _logger);
             game.Play();
 
             // assert
@@ -339,7 +339,7 @@ namespace SnakesAndLadders.Tests
             var stats = StatsFactory.CreateStats(_players, _logger);
 
             // act
-            var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, characters, mockDice.Object, stats, _logger);
+            using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, characters, mockDice.Object, stats, _logger);
             game.Play();
 
             // assert
@@ -387,7 +387,7 @@ namespace SnakesAndLadders.Tests
             var stats = StatsFactory.CreateStats(_players, _logger);
 
             // act
-            var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, characters, mockDice.Object, stats, _logger);
+            using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, characters, mockDice.Object, stats, _logger);
             game.Play();
 
             // assert
@@ -412,7 +412,7 @@ namespace SnakesAndLadders.Tests
             };
 
             // act
-            var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, charactersWithMultipleMinimums, _dice, _stats, _logger);
+            using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, charactersWithMultipleMinimums, _dice, _stats, _logger);
             
             // assert
             game.GetGameStats().GetMinimumRollsForWin(charactersWithMultipleMinimums, _board.Size).Should().Be(10);
@@ -436,10 +436,60 @@ namespace SnakesAndLadders.Tests
             };
 
             // act
-            var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, charactersWithSingleMinimums, _dice, _stats, _logger);
+            using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, charactersWithSingleMinimums, _dice, _stats, _logger);
 
             // assert
             game.GetGameStats().GetMinimumRollsForWin(charactersWithSingleMinimums, _board.Size).Should().Be(8);
+        }
+
+        [Test]
+        public void Should_capture_total_rolls()
+        {
+            // arrange
+            var characters = new List<ICharacter>
+            {
+                CharacterFactory.CreateCharacter(Character.Snake, 90, 50),
+                CharacterFactory.CreateCharacter(Character.Snake, 98, 66),
+                CharacterFactory.CreateCharacter(Character.Snake, 60, 30),
+                CharacterFactory.CreateCharacter(Character.Snake, 20, 6),
+                CharacterFactory.CreateCharacter(Character.Ladder, 10, 55),
+                CharacterFactory.CreateCharacter(Character.Ladder, 68, 85),
+                CharacterFactory.CreateCharacter(Character.Ladder, 35, 95)
+            };
+
+            var mockDice = new Mock<IAdvancer>();
+            var rolls = new Queue<int>();
+
+            for (var i = 0; i < 9; i++) // to reach 54
+            {
+                rolls.Enqueue(6);
+            }
+
+            rolls.Enqueue(3);
+            rolls.Enqueue(3); // snake 60 to 30
+
+            rolls.Enqueue(5); // ladder 35 to 95 (lucky)
+            rolls.Enqueue(3); // snake 98 to 66
+
+            rolls.Enqueue(2); // ladder 68 to 85 (lucky)
+            rolls.Enqueue(3); // 2 less than snake at 90 (lucky)
+
+            rolls.Enqueue(1); // 1 less than snake at 90 (lucky)
+            rolls.Enqueue(5); // 94
+            rolls.Enqueue(6); // winner exact (lucky)
+
+            var totalRolls = rolls.Count;
+
+            mockDice.Setup(x => x.Next()).Returns(() => rolls.Dequeue());
+
+            var stats = StatsFactory.CreateStats(_players, _logger);
+
+            // act
+            using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, characters, mockDice.Object, stats, _logger);
+            game.Play();
+
+            // assert
+            game.GetGameStats().GetTotalRolls(_players.Single()).Should().Be(totalRolls);
         }
     }
 }

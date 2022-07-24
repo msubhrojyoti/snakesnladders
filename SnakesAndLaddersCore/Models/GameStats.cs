@@ -194,5 +194,15 @@ namespace SnakesAndLadders.Core.Models
 
             return node.DistanceFromStart;
         }
+
+        public int UpdateTotalTraps(IPlayer player)
+        {
+            return _stats[$"{player}"].TotalTraps++;
+        }
+
+        public int GetTotalTraps(IPlayer player)
+        {
+            return _stats[$"{player}"].TotalTraps;
+        }
     }
 }

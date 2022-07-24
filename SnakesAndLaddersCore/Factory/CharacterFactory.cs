@@ -21,7 +21,7 @@ namespace SnakesAndLadders.Core.Factory
                 case Character.Snake:
                     return new Snake(start, end);
                 case Character.Trap:
-                    return new Snake(start, end);
+                    return new Trap(start, end);
                 default:
                     throw new ArgumentException($"Unsupported type of character: {nameof(type)}");
             }

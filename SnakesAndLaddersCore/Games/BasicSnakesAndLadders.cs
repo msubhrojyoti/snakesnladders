@@ -2,9 +2,9 @@
 using SnakesAndLadders.Core.Factory;
 using SnakesAndLadders.Core.Interfaces;
 
-namespace SnakesAndLadders.Core.Models
+namespace SnakesAndLadders.Core.Games
 {
-    public class BasicSnakesAndLadders : IGame, IDisposable
+    public class BasicSnakesAndLadders : IGame
     {
         protected readonly IEnumerable<IPlayer> _players;
         protected readonly Dictionary<int, ICharacter> _characters;
@@ -90,12 +90,7 @@ namespace SnakesAndLadders.Core.Models
             }
         }
 
-        public void Dispose()
-        {
-            _logger?.Dispose();
-        }
-
-        protected void ExecuteRoll(IPlayer player, int roll)
+        protected virtual void ExecuteRoll(IPlayer player, int roll)
         {
             var newPos = player.Position + roll;
             if (newPos <= _board.Size)
@@ -116,6 +111,26 @@ namespace SnakesAndLadders.Core.Models
                     player.Position = newPos;
                 }
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _logger.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // Disposable types implement a finalizer.
+        ~BasicSnakesAndLadders()
+        {
+            Dispose(false);
         }
     }
 }

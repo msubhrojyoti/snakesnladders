@@ -41,6 +41,12 @@ namespace SnakesAndLadders.Tests
             _game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, _characters, _dice, _stats, _logger);
         }
 
+        [TearDown]
+        public void Teardown()
+        {
+            _game.Dispose();
+        }
+
         [Test]
         public void Should_throw_exception_when_invalid_snake_position()
         {
@@ -59,7 +65,7 @@ namespace SnakesAndLadders.Tests
             // act
             var exception = Assert.Throws(typeof(InvalidCharacterPositionException), () =>
             {
-                GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, invalidCharacters, _dice, _stats, _logger);
+                using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, invalidCharacters, _dice, _stats, _logger);
             });
 
             // assert
@@ -84,7 +90,7 @@ namespace SnakesAndLadders.Tests
             // act
             var exception = Assert.Throws(typeof(InvalidCharacterPositionException), () =>
             {
-                GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, invalidCharacters, _dice, _stats, _logger);
+                using var game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, invalidCharacters, _dice, _stats, _logger);
             });
 
             // assert

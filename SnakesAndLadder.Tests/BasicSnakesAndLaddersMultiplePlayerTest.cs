@@ -41,6 +41,12 @@ namespace SnakesAndLadders.Tests
             _game = GameFactory.CreateGame(Game.BasicSnakesAndLadder, _board, _players, _characters, _dice, _stats, _logger);
         }
 
+        [TearDown]
+        public void Teardown()
+        {
+            _game.Dispose();
+        }
+
         [Test]
         public void Should_have_winners()
         {
